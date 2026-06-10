@@ -1,0 +1,233 @@
+{
+  "info": {
+    "name": "Gestão de Contas",
+    "description": "API de gestão de contas a pagar",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Registrar usuário",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/auth/registro",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Admin\",\n  \"email\": \"admin@email.com\",\n  \"senha\": \"12345678\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/auth/login",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@email.com\",\n  \"senha\": \"12345678\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fornecedores",
+      "item": [
+        {
+          "name": "Criar fornecedor",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/fornecedores",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Fornecedor A\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar fornecedores",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8081/api/fornecedores",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Buscar fornecedor por ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8081/api/fornecedores/{{fornecedorId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Atualizar fornecedor",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8081/api/fornecedores/{{fornecedorId}}",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Fornecedor A Atualizado\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Deletar fornecedor",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8081/api/fornecedores/{{fornecedorId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contas",
+      "item": [
+        {
+          "name": "Criar conta",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/contas",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dataVencimento\": \"2026-07-15\",\n  \"valor\": 1500.50,\n  \"descricao\": \"Serviço de consultoria\",\n  \"fornecedorNome\": \"Consultoria XYZ\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar contas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/contas?pagina=0&tamanho=10",
+              "query": [
+                {"key": "pagina", "value": "0"},
+                {"key": "tamanho", "value": "10"},
+                {"key": "dataVencimento", "value": "", "disabled": true},
+                {"key": "descricao", "value": "", "disabled": true}
+              ]
+            },
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Buscar conta por ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8081/api/contas/{{contaId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Atualizar conta",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8081/api/contas/{{contaId}}",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dataVencimento\": \"2026-08-20\",\n  \"valor\": 2000.00,\n  \"descricao\": \"Nova descrição\",\n  \"fornecedorId\": \"{{fornecedorId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Pagar conta",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/contas/{{contaId}}/pagamento",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dataPagamento\": \"2026-06-10\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Cancelar conta",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/contas/{{contaId}}/cancelamento",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Deletar conta",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8081/api/contas/{{contaId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Relatório por período",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/contas/relatorio?inicio=2026-01-01&fim=2026-12-31",
+              "query": [
+                {"key": "inicio", "value": "2026-01-01"},
+                {"key": "fim", "value": "2026-12-31"}
+              ]
+            },
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Importar CSV",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/contas/importacao/csv",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "arquivo",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "TOKEN",
+      "value": ""
+    },
+    {
+      "key": "fornecedorId",
+      "value": ""
+    },
+    {
+      "key": "contaId",
+      "value": ""
+    }
+  ]
+}
