@@ -12,7 +12,7 @@
           "name": "Registrar usuário",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/auth/registro",
+            "url": "http://localhost:8080/api/auth/registro",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {
               "mode": "raw",
@@ -24,12 +24,66 @@
           "name": "Login",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/auth/login",
+            "url": "http://localhost:8080/api/auth/login",
             "header": [{"key": "Content-Type", "value": "application/json"}],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"admin@email.com\",\n  \"senha\": \"12345678\"\n}"
             }
+          }
+        },
+        {
+          "name": "Buscar usuário por ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/auth/{{usuarioId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Listar usuários",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/auth",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
+          }
+        },
+        {
+          "name": "Atualizar usuário",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8080/api/auth/{{usuarioId}}",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Admin Atualizado\",\n  \"email\": \"admin@email.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Atualizar senha",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:8080/api/auth/{{usuarioId}}/senha",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senhaAtual\": \"12345678\",\n  \"novaSenha\": \"87654321\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Deletar usuário",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/auth/{{usuarioId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         }
       ]
@@ -41,7 +95,7 @@
           "name": "Criar fornecedor",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/fornecedores",
+            "url": "http://localhost:8080/api/fornecedores",
             "header": [
               {"key": "Content-Type", "value": "application/json"},
               {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
@@ -56,7 +110,7 @@
           "name": "Listar fornecedores",
           "request": {
             "method": "GET",
-            "url": "http://localhost:8081/api/fornecedores",
+            "url": "http://localhost:8080/api/fornecedores",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         },
@@ -64,7 +118,7 @@
           "name": "Buscar fornecedor por ID",
           "request": {
             "method": "GET",
-            "url": "http://localhost:8081/api/fornecedores/{{fornecedorId}}",
+            "url": "http://localhost:8080/api/fornecedores/{{fornecedorId}}",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         },
@@ -72,7 +126,7 @@
           "name": "Atualizar fornecedor",
           "request": {
             "method": "PUT",
-            "url": "http://localhost:8081/api/fornecedores/{{fornecedorId}}",
+            "url": "http://localhost:8080/api/fornecedores/{{fornecedorId}}",
             "header": [
               {"key": "Content-Type", "value": "application/json"},
               {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
@@ -87,7 +141,7 @@
           "name": "Deletar fornecedor",
           "request": {
             "method": "DELETE",
-            "url": "http://localhost:8081/api/fornecedores/{{fornecedorId}}",
+            "url": "http://localhost:8080/api/fornecedores/{{fornecedorId}}",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         }
@@ -100,7 +154,7 @@
           "name": "Criar conta",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/contas",
+            "url": "http://localhost:8080/api/contas",
             "header": [
               {"key": "Content-Type", "value": "application/json"},
               {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
@@ -116,7 +170,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:8081/api/contas?pagina=0&tamanho=10",
+              "raw": "http://localhost:8080/api/contas?pagina=0&tamanho=10",
               "query": [
                 {"key": "pagina", "value": "0"},
                 {"key": "tamanho", "value": "10"},
@@ -131,7 +185,7 @@
           "name": "Buscar conta por ID",
           "request": {
             "method": "GET",
-            "url": "http://localhost:8081/api/contas/{{contaId}}",
+            "url": "http://localhost:8080/api/contas/{{contaId}}",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         },
@@ -139,7 +193,7 @@
           "name": "Atualizar conta",
           "request": {
             "method": "PUT",
-            "url": "http://localhost:8081/api/contas/{{contaId}}",
+            "url": "http://localhost:8080/api/contas/{{contaId}}",
             "header": [
               {"key": "Content-Type", "value": "application/json"},
               {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
@@ -154,7 +208,7 @@
           "name": "Pagar conta",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/contas/{{contaId}}/pagamento",
+            "url": "http://localhost:8080/api/contas/{{contaId}}/pagamento",
             "header": [
               {"key": "Content-Type", "value": "application/json"},
               {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
@@ -169,7 +223,7 @@
           "name": "Cancelar conta",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/contas/{{contaId}}/cancelamento",
+            "url": "http://localhost:8080/api/contas/{{contaId}}/cancelamento",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         },
@@ -177,7 +231,7 @@
           "name": "Deletar conta",
           "request": {
             "method": "DELETE",
-            "url": "http://localhost:8081/api/contas/{{contaId}}",
+            "url": "http://localhost:8080/api/contas/{{contaId}}",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}]
           }
         },
@@ -186,7 +240,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:8081/api/contas/relatorio?inicio=2026-01-01&fim=2026-12-31",
+              "raw": "http://localhost:8080/api/contas/relatorio?inicio=2026-01-01&fim=2026-12-31",
               "query": [
                 {"key": "inicio", "value": "2026-01-01"},
                 {"key": "fim", "value": "2026-12-31"}
@@ -199,7 +253,7 @@
           "name": "Importar CSV",
           "request": {
             "method": "POST",
-            "url": "http://localhost:8081/api/contas/importacao/csv",
+            "url": "http://localhost:8080/api/contas/importacao/csv",
             "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
             "body": {
               "mode": "formdata",
@@ -219,6 +273,10 @@
   "variable": [
     {
       "key": "TOKEN",
+      "value": ""
+    },
+    {
+      "key": "usuarioId",
       "value": ""
     },
     {

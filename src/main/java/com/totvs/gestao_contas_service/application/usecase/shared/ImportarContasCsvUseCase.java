@@ -25,7 +25,8 @@ public class ImportarContasCsvUseCase {
             rabbitTemplate.convertAndSend(
                     RabbitmqConfig.EXCHANGE,
                     RabbitmqConfig.ROUTING_KEY,
-                    new ImportacaoSolicitadaEvent(protocolo, contatudo)
+                    new ImportacaoSolicitadaEvent(protocolo, contatudo),
+                    message -> message
             );
 
             return new ImportacaoResponse(protocolo,
