@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: gestao-contas-service
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/appdb}
+    username: ${DATABASE_USERNAME:appuser}
+    password: ${DATABASE_PASSWORD:apppassword}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+server:
+  port: 8081
+
+jwt:
+  secret: ${JWT_SECRET:sua-chave-secreta-aqui-com-pelo-menos-256-bits-para-hs256}
+  expiracao: ${JWT_EXPIRACAO:86400000}
