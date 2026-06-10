@@ -11,25 +11,27 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public interface ContaJpaRepository extends JpaRepository<ContaJpaEntity, UUID> {
-    @Query("""
-    SELECT c FROM ContaJpaEntity c 
-    WHERE (:dataVencimento IS NULL OR c.dataVencimento = :dataVencimento)
-    AND (:descricao IS NULL OR LOWER(c.descricao) LIKE LOWER(
-    CONCAT('%', :descricao, '%')))
-    ORDER BY c.dataVencimento DESC
-    """)
+    @Query(value = """
+    SELECT * FROM contas
+    WHERE (:dataVencimento IS NULL OR data_vencimento = :dataVencimento)
+    AND (:descricao IS NULL OR descricao ILIKE '%' || CAST(:descricao AS text) || '%')
+    ORDER BY data_vencimento DESC
+    """, countQuery = """
+    SELECT COUNT(*) FROM contas
+    WHERE (:dataVencimento IS NULL OR data_vencimento = :dataVencimento)
+    AND (:descricao IS NULL OR descricao ILIKE '%' || CAST(:descricao AS text) || '%')
+    """, nativeQuery = true)
     Page<ContaJpaEntity> filtrar(
             @Param("dataVencimento") LocalDate dataVencimento,
             @Param("descricao") String descricao,
             Pageable pageable
             );
 
-    @Query("""
-    SELECT COUNT(c) FROM ContaJpaEntity c
-    WHERE (:dataVencimento IS NULL OR c.dataVencimento = :dataVencimento)
-    AND (:descricao IS NULL OR LOWER(c.descricao) LIKE LOWER(
-    CONCAT('%', :descricao, '%')))
-    """)
+    @Query(value = """
+    SELECT COUNT(*) FROM contas
+    WHERE (:dataVencimento IS NULL OR data_vencimento = :dataVencimento)
+    AND (:descricao IS NULL OR descricao ILIKE '%' || CAST(:descricao AS text) || '%')
+    """, nativeQuery = true)
     long contarFiltradas(
             @Param("dataVencimento") LocalDate dataVencimento,
             @Param("descricao") String descricao

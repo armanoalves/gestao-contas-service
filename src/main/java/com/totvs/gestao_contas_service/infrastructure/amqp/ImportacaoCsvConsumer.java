@@ -4,6 +4,7 @@ import com.totvs.gestao_contas_service.domain.entity.Conta;
 import com.totvs.gestao_contas_service.domain.entity.Fornecedor;
 import com.totvs.gestao_contas_service.domain.event.ImportacaoSolicitadaEvent;
 import com.totvs.gestao_contas_service.domain.repository.ContaRepository;
+import com.totvs.gestao_contas_service.domain.repository.FornecedorRepository;
 import com.totvs.gestao_contas_service.domain.valueobject.Descricao;
 import com.totvs.gestao_contas_service.domain.valueobject.Dinheiro;
 import org.slf4j.Logger;
@@ -17,23 +18,24 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class ImportacaoCsvConsumer {
     private static final Logger log = LoggerFactory.getLogger(ImportacaoCsvConsumer.class);
     private final ContaRepository contaRepository;
+    private final FornecedorRepository fornecedorRepository;
 
-    public ImportacaoCsvConsumer(ContaRepository contaRepository) {
+    public ImportacaoCsvConsumer(ContaRepository contaRepository, FornecedorRepository fornecedorRepository) {
         this.contaRepository = contaRepository;
+        this.fornecedorRepository = fornecedorRepository;
     }
 
     @RabbitListener(queues = RabbitmqConfig.QUEUE)
     public void processar(ImportacaoSolicitadaEvent evento) {
-        List<Conta> contas = new ArrayList<>();
         int linhaAtual = 0;
-        int erros = 0;
+        int errosValidacao = 0;
+        int contasSalvas = 0;
+        int errosPersistencia = 0;
 
         try (var reader = new BufferedReader(
                 new InputStreamReader(
@@ -47,7 +49,7 @@ public class ImportacaoCsvConsumer {
                     String[] campos = linha.split(",");
                     if (campos.length < 4) {
                         log.warn("Linha {} ignorada: número insuficiente de campos", linhaAtual);
-                        erros++;
+                        errosValidacao++;
                         continue;
                     }
 
@@ -56,25 +58,30 @@ public class ImportacaoCsvConsumer {
                     String descricao = campos[2].trim();
                     String fornecedorNome = campos[3].trim();
 
-                    Fornecedor fornecedor = new Fornecedor(fornecedorNome);
+                    Fornecedor fornecedor = fornecedorRepository.buscarPorNome(fornecedorNome)
+                            .orElseGet(() -> fornecedorRepository.salvar(new Fornecedor(fornecedorNome)));
                     Conta conta = Conta.criar(
                             dataVencimento,
                             new Dinheiro(valor),
                             new Descricao(descricao),
                             fornecedor
                     );
-                    contas.add(conta);
+
+                    try {
+                        contaRepository.salvar(conta);
+                        contasSalvas++;
+                    } catch (Exception e) {
+                        log.warn("Erro ao persistir conta da linha {}: {}", linhaAtual, e.getMessage());
+                        errosPersistencia++;
+                    }
                 } catch (Exception e) {
                     log.warn("Erro ao processar linha {}: {}", linhaAtual, e.getMessage());
-                    erros++;
+                    errosValidacao++;
                 }
             }
 
-            if (!contas.isEmpty()) {
-                contaRepository.salvarTodos(contas);
-            }
-            log.info("CSV processado: {} contas importadas, {} erros em {} linhas",
-                    contas.size(), erros, linhaAtual);
+            log.info("CSV processado: {} contas salvas, {} erros de validação, {} erros de persistência em {} linhas",
+                    contasSalvas, errosValidacao, errosPersistencia, linhaAtual);
 
         } catch (Exception e) {
             log.error("Erro fatal ao processar CSV: {}", e.getMessage(), e);

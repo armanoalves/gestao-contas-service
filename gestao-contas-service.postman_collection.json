@@ -170,10 +170,14 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:8080/api/contas?pagina=0&tamanho=10",
+              "raw": "http://localhost:8080/api/contas?pagina=0&tamanho=20&dataVencimento=&descricao=",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "contas"],
               "query": [
                 {"key": "pagina", "value": "0"},
-                {"key": "tamanho", "value": "10"},
+                {"key": "tamanho", "value": "20"},
                 {"key": "dataVencimento", "value": "", "disabled": true},
                 {"key": "descricao", "value": "", "disabled": true}
               ]
@@ -241,6 +245,10 @@
             "method": "GET",
             "url": {
               "raw": "http://localhost:8080/api/contas/relatorio?inicio=2026-01-01&fim=2026-12-31",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "contas", "relatorio"],
               "query": [
                 {"key": "inicio", "value": "2026-01-01"},
                 {"key": "fim", "value": "2026-12-31"}

@@ -4,9 +4,10 @@ import com.totvs.gestao_contas_service.domain.entity.Conta;
 import com.totvs.gestao_contas_service.domain.entity.Fornecedor;
 import com.totvs.gestao_contas_service.domain.entity.Situacao;
 import com.totvs.gestao_contas_service.domain.repository.ContaRepository;
-import com.totvs.gestao_contas_service.domain.valueobject.Dinheiro;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,8 +47,8 @@ public class ContaRepositoryImpl implements ContaRepository {
     }
 
     @Override
-    public Dinheiro calcularTotalPagoPorPeriodo(LocalDate inicio, LocalDate fim) {
-        return new Dinheiro(contaJpaRepository.totalPagoPorPeriodo(inicio, fim));
+    public BigDecimal calcularTotalPagoPorPeriodo(LocalDate inicio, LocalDate fim) {
+        return contaJpaRepository.totalPagoPorPeriodo(inicio, fim);
     }
 
     @Override

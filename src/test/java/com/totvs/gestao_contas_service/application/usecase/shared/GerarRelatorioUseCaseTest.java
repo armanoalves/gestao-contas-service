@@ -2,7 +2,6 @@ package com.totvs.gestao_contas_service.application.usecase.shared;
 
 import com.totvs.gestao_contas_service.application.dto.shared.RelatorioResponse;
 import com.totvs.gestao_contas_service.domain.repository.ContaRepository;
-import com.totvs.gestao_contas_service.domain.valueobject.Dinheiro;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +27,7 @@ class GerarRelatorioUseCaseTest {
         LocalDate fim = LocalDate.of(2026, 1, 31);
 
         when(contaRepository.calcularTotalPagoPorPeriodo(inicio, fim))
-                .thenReturn(new Dinheiro(new BigDecimal("1500.00")));
+                .thenReturn(new BigDecimal("1500.00"));
         when(contaRepository.contarPagasPorPeriodo(inicio, fim))
                 .thenReturn(5L);
 
@@ -46,7 +45,7 @@ class GerarRelatorioUseCaseTest {
         LocalDate fim = LocalDate.of(2025, 1, 31);
 
         when(contaRepository.calcularTotalPagoPorPeriodo(inicio, fim))
-                .thenReturn(new Dinheiro(BigDecimal.ONE));
+                .thenReturn(BigDecimal.ZERO);
         when(contaRepository.contarPagasPorPeriodo(inicio, fim))
                 .thenReturn(0L);
 
