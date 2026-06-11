@@ -40,6 +40,15 @@ A aplicação ficará disponível em `http://localhost:8080`.
 
 > O `docker-compose.yml` expõe a porta `8080` mapeando para `8081` (porta interna da aplicação).
 
+### Documentação Interativa (Swagger UI)
+
+Com a aplicação em execução, acesse:
+
+- **Swagger UI**: [`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html)
+- **OpenAPI JSON**: [`http://localhost:8080/v3/api-docs`](http://localhost:8080/v3/api-docs)
+
+O Swagger UI permite explorar e testar todos os endpoints da API diretamente pelo navegador. Para autenticação, utilize o endpoint `POST /api/auth/login` para obter um token JWT e clique no botão **Authorize** no topo da página para inseri-lo.
+
 ### Variáveis de ambiente (valores padrão)
 
 | Variável | Default |
