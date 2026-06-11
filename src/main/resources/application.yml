@@ -34,3 +34,11 @@ server:
 jwt:
   secret: ${JWT_SECRET:sua-chave-secreta-aqui-com-pelo-menos-256-bits-para-hs256}
   expiracao: ${JWT_EXPIRACAO:86400000}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
